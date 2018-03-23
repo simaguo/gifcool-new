@@ -11,6 +11,9 @@
 |
 */
 
-$router->get('/', function () use ($router) {
-    return $router->app->version();
+$api = app('Dingo\Api\Routing\Router');
+
+$api->version('v1',['middleware' => 'api.throttle','limit' => 5, 'expires' => 1], function ($api)use ($router) {
+
+    $api->get('/', \App\Http\Controllers\ExampleController::class.'@index');
 });
