@@ -15,6 +15,7 @@ import 'vue-awesome/icons/thumbs-o-up'
 import 'vue-awesome/icons/thumbs-down'
 import 'vue-awesome/icons/thumbs-o-down'
 import 'vue-awesome/icons/edit'
+import 'vue-awesome/icons/user-o'
 
 Vue.use(MintUI)
 

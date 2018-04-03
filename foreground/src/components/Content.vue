@@ -37,23 +37,52 @@
         <article class="content-down">
             <h3>热门评论</h3>
             <div class="content-down-comments">
-                <div><span class="content-down-comments-name">张三</span><span>3h</span></div>
+                <div class="content-down-comments-up">
+                    <span><img :src="src" style="border-radius: 10px;height: 20px" /></span>
+                    <span class="content-down-comments-name">张三</span>
+                    <span>3h</span>
+                    <span style="float: right;margin-right: 15px;">
+                        <icon name="thumbs-o-up"></icon>12
+                    </span>
+                    <span style="float: right;margin-right: 15px;">
+                        <icon name="thumbs-o-down"></icon>8
+                    </span>
+                </div>
                 <div class="content-down-comments-text">
                     <p>听到砸门，西门庆为什么吓得魂不附体？因为武大郎此时有权在捉奸现场杀死西门庆和潘金莲，但必须同时杀掉两人。宝强几项条件完全具备，又有足够的武术技能实现其目的。早生一百二十年，就不用浪费国家那么多法律资源，宝强一人即可办妥 </p>
                 </div>
             </div>
             <div class="content-down-comments">
-                <div><span class="content-down-comments-name">张三</span><span>3h</span></div>
-                <div class="content-down-comments-text">
-                    <p>听到砸门，西门庆为什么吓得魂不附体？因为武大郎此时有权在捉奸现场杀死西门庆和潘金莲，但必须同时杀掉两人。宝强几项条件完全具备，又有足够的武术技能实现其目的。早生一百二十年，就不用浪费国家那么多法律资源，宝强一人即可办妥 </p>
+                <div class="content-down-comments-up">
+                    <span><img :src="src" style="border-radius: 10px;height: 20px" /></span>
+                    <span class="content-down-comments-name">张三</span>
+                    <span>3h</span>
+                    <span style="float: right;margin-right: 15px;">
+                        <icon name="thumbs-o-up"></icon>12
+                    </span>
+                    <span style="float: right;margin-right: 15px;">
+                        <icon name="thumbs-o-down"></icon>8
+                    </span>
                 </div>
-            </div>
-            <div class="content-down-comments">
-                <div><span class="content-down-comments-name">张三</span><span>3h</span></div>
                 <div class="content-down-comments-text">
-                    <p>听到砸门，西门庆为什么吓得魂不附体？因为武大郎此时有权在捉奸现场杀死西门庆和潘金莲，但必须同时杀掉两人。宝强几项条件完全具备，又有足够的武术技能实现其目的。早生一百二十年，就不用浪费国家那么多法律资源，宝强一人即可办妥 </p>
+                    <p>听到砸门，西门庆为什么吓得魂不附体？ </p>
                 </div>
+            </div><div class="content-down-comments">
+            <div class="content-down-comments-up">
+                <span><img :src="src" style="border-radius: 10px;height: 20px" /></span>
+                <span class="content-down-comments-name">张三</span>
+                <span>3h</span>
+                <span style="float: right;margin-right: 15px;">
+                    <icon name="thumbs-o-up"></icon>12
+                </span>
+                <span style="float: right;margin-right: 15px;">
+                    <icon name="thumbs-o-down"></icon>8
+                </span>
             </div>
+            <div class="content-down-comments-text">
+                <p>听到砸门，西门庆为什么吓得魂不附体？因为武大郎此时有权在捉奸现场杀死西门庆和潘金莲. </p>
+            </div>
+        </div>
         </article>
     </section>
 
@@ -66,6 +95,7 @@
         data () {
             return {
                 img: 'https://tse3.mm.bing.net/th?id=OIP.hT034blVsi-A1ChdKgQM9gHaE-&pid=Api',
+                src:'https://wx.qlogo.cn/mmopen/vi_32/I36vsEtSvLWx0vklxNibNw0XuCyWBZWHBibPk25a4QvXZF8uhBTFh5eb2VbCFXWD9A8AAPl1mDWBRCGBBR1ojVEA/0'
             };
         }
     }
@@ -135,6 +165,7 @@
         width: 100%;
         height: 100%;
         border: 1px solid #aaa;
+        resize: none;
     }
 
     .content-down {
@@ -146,7 +177,15 @@
 
     .content-down .content-down-comments{
         margin: 10px 0px;
-        border: #aaa 1px solid;
+        #border: #aaa 1px solid;
+    }
+    .content-down .content-down-comments .content-down-comments-up{
+         height: 30px;
+        border-top: #f7e1b5 solid 1px;
+    }
+    .content-down .content-down-comments .content-down-comments-up span{
+        height: 30px;
+        line-height: 30px;
     }
 
     .content-down .content-down-comments .content-down-comments-name{
@@ -154,5 +193,6 @@
     }
     .content-down .content-down-comments .content-down-comments-text p{
         text-indent:24px;
+        line-height:20px;
     }
 </style>

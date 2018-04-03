@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Api\Serializer\CustomSerializer;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -14,5 +15,12 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         //
+        //app('api.transformer')->getAdapter()->getFractal()->setSerializer(new CustomSerializer());
+        $this->app->make('api.transformer')->getAdapter()->getFractal()->setSerializer(new CustomSerializer());
+    }
+
+    public function boot()
+    {
+
     }
 }
