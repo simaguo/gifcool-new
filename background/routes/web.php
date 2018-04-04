@@ -15,9 +15,11 @@ $router->get('/','ExampleController@index');
 
 $api = app('api.router');//app('Dingo\Api\Routing\Router');
 
-$api->version(['v1','v2'], ['middleware' => 'api.throttle', 'limit' => 5, 'expires' => 1], function ($api) use ($router) {
+$api->version(['v1','v2'], ['middleware' => 'api.throttle', 'limit' => 60, 'expires' => 1], function ($api) use ($router) {
 
-    $api->any('/login', \App\Http\Controllers\LoginController::class . '@index');
+    $api->any('/login', \App\Http\Controllers\AuthController::class . '@login');
+    //$api->options('/login', \App\Http\Controllers\AuthController::class . '@login');
+    $api->any('/register', \App\Http\Controllers\AuthController::class . '@register');
 });
 
 //echo '<pre>';print_r((array)$api->getRoutes());exit;

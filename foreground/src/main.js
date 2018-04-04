@@ -22,6 +22,11 @@ Vue.use(MintUI)
 import Icon from 'vue-awesome/components/Icon'
 Vue.component('icon', Icon)
 
+import axios from 'axios';
+axios.defaults.baseURL = 'http://api.gifcool.cn';
+Vue.prototype.$http = axios;
+
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
