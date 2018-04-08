@@ -16,23 +16,19 @@ import 'vue-awesome/icons/thumbs-down'
 import 'vue-awesome/icons/thumbs-o-down'
 import 'vue-awesome/icons/edit'
 import 'vue-awesome/icons/user-o'
+import store from './store/';
 
 Vue.use(MintUI)
 
 import Icon from 'vue-awesome/components/Icon'
 Vue.component('icon', Icon)
 
-import axios from 'axios';
-axios.defaults.baseURL = 'http://api.gifcool.cn';
-Vue.prototype.$http = axios;
-
-
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
-  router,
+  router, store,
   components: { App },
   template: '<App/>'
 })

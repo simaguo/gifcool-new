@@ -7,34 +7,56 @@
 
         <div class="login-button">
             <mt-button type="primary" size="large" @click="login()">登录</mt-button>
+            <div style="text-align: center;margin-top: 10px">
+                还没有账号？马上去<a>注册</a>
+            </div>
         </div>
     </section>
 
 </template>
 
 <script type="application/javascript">
+    import Api from '../api';
+    //import { Toast } from 'mint-ui';
+
     export default {
         name: "login",
         data () {
             return {
-                email: "",
-                password: "",
+                email: "simaguo@qq.com",
+                password: "123456",
             }
         },
         methods: {
             login: function () {
-                var email = this.email;
-                var password = this.password;
-                this.$http.post('/v1/login', {
-                        email: email,
-                        password: password,
-                    })
-                    .then(function (response) {
-                        console.log(response);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
+                let email = this.email;
+                let password = this.password;
+                let _this = this;
+                Api.login(email,password).then(function (response) {
+                    console.group(response)
+                    let user = response.data.data
+                    _this.$store.dispatch('login',user);
+                    _this.$toast('登陆成功');
+                    _this.$router.push({path:'/'});
+                }).catch(function (error) {
+                    _this.$toast('登陆失败');
+                    if (error.response) {
+                        // The request was made and the server responded with a status code
+                        // that falls out of the range of 2xx
+                        console.log(error.response.data);
+                        console.log(error.response.status);
+                        console.log(error.response.headers);
+                    } else if (error.request) {
+                        // The request was made but no response was received
+                        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                        // http.ClientRequest in node.js
+                        console.log(error.request);
+                    } else {
+                        // Something happened in setting up the request that triggered an Error
+                        console.log('Error', error.message);
+                    }
+                    console.log(error.config);
+                });
             }
         }
     }
