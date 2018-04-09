@@ -1,7 +1,7 @@
 <template>
     <div>
         <section style="padding-bottom: 40px">
-            <mt-header fixed title="标题过长会隐藏后面的内容啊哈哈哈哈">
+            <mt-header fixed title="gifcool">
                 <router-link to="/" slot="left">
                     <mt-button icon="back">返回</mt-button>
                 </router-link>
@@ -13,19 +13,19 @@
 
         <section style="padding-top: 55px">
             <mt-tabbar fixed v-model="selected">
-                <mt-tab-item id="外卖">
+                <mt-tab-item id="首页" href="#/">
                     <img slot="icon" v-bind:src="baseimg"/>
-                    外卖
+                    首页
                 </mt-tab-item>
-                <mt-tab-item id="订单">
+                <mt-tab-item id="收藏" href="#/collection">
                     <img slot="icon" v-bind:src="baseimg"/>
-                    订单
+                    收藏
                 </mt-tab-item>
-                <mt-tab-item id="发现">
+                <mt-tab-item id="发现" href="#/discover">
                     <img slot="icon" v-bind:src="baseimg"/>
                     发现
                 </mt-tab-item>
-                <mt-tab-item id="我的">
+                <mt-tab-item id="我的" href="#/user">
                     <img slot="icon" v-bind:src="baseimg"/>
                     我的
                 </mt-tab-item>

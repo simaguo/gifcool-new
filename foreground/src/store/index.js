@@ -19,12 +19,19 @@ export default new Vuex.Store({
 
     },
     actions:{
-        login(context,user){
+        login:function(context,user){
             localStorage.setItem('token',user.token);
             localStorage.setItem('email',user.email);
             localStorage.setItem('avatar',user.avatar);
             localStorage.setItem('name',user.name);
-        }
+        },
+        regist:function(context,user){
+            localStorage.setItem('token',user.token);
+            localStorage.setItem('email',user.email);
+            localStorage.setItem('avatar',user.avatar);
+            localStorage.setItem('name',user.name);
+        },
+
     }
 
 })

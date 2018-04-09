@@ -29,10 +29,10 @@ class AuthController extends Controller
             return $this->response->item(Auth::user(),new UserTransformer);
 
         }
-        return $this->response->error('login fail.', 404);
+        return $this->response->error('登陆失败', 404);
     }
 
-    public function register(Request $request)
+    public function regist(Request $request)
     {
         $name = $request->input('name');
         $email = $request->input('email');
@@ -50,14 +50,14 @@ class AuthController extends Controller
             return $this->response->item(Auth::user(),new UserTransformer);
         }
 
-        $this->response->error('register fail.', 404);
+        $this->response->error('注册失败', 404);
     }
 
     protected function _validate(Request $request)
     {
         $validator = Validator::make($request->all(),[
-            'name'=>'required|between:6,30',
             'email'=>'required|email|unique:users',
+            'name'=>'required|between:6,30',
             'password'=>'required|between:6,30',
             'repassword'=>'required|same:password',
         ],[

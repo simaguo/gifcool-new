@@ -21,7 +21,9 @@ class CreateGifcoolCnTables extends Migration
             $table->string('local_img_url')->comment('本地地址');
             $table->integer('tag_id')->comment('tags表ID');
             $table->integer('source_id')->comment('sources表主键');
+            $table->string('source_unique',30)->comment('source唯一标识');
             $table->tinyInteger('https')->comment('remote是否支持https，1表示支持');
+            $table->unique(['source_id','source_unique']);
         });
         Schema::create('tags',function (Blueprint $table){
             $table->increments('id');

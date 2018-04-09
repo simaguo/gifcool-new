@@ -2,52 +2,26 @@
 
     <section>
         <mt-navbar v-model="selected">
-            <mt-tab-item id="x1">选项一</mt-tab-item>
-            <mt-tab-item id="x2">选项二</mt-tab-item>
-            <mt-tab-item id="x3">选项三</mt-tab-item>
+            <mt-tab-item id="x1">动图</mt-tab-item>
+            <mt-tab-item id="x2">图文</mt-tab-item>
+            <mt-tab-item id="x3">文章</mt-tab-item>
         </mt-navbar>
 
         <!-- tab-container -->
         <mt-tab-container v-model="selected">
             <mt-tab-container-item id="x1">
-                <article class="cont-li">
+                <article class="cont-li" v-for="(value, key) in gifs">
                     <div>
-                        <header style="padding: 8px 16px;">标题</header>
-                        <img style="width: 100%" :src="img"/>
+                        <header style="padding: 8px 16px;">{{ value.title }}</header>
+                        <img style="width: 100%" v-lazy="value.url" />
                     </div>
 
                     <footer style="padding: 8px 16px;">
-                        <span style="margin-right: 35px;"><icon  name="commenting"></icon>15</span>
-
-
-                        <span style="margin-right: 5px;float: right"><icon name="thumbs-o-up"></icon>122</span>
-                        <span style="margin-right: 15px;float: right"><icon name="thumbs-o-down"></icon>154</span>
+                        <span style="margin-right: 35px;"><icon  name="commenting"></icon>{{ value.comments }}</span>
+                        <span style="margin-right: 5px;float: right"><icon name="thumbs-o-up"></icon>{{ value.love }}</span>
+                        <span style="margin-right: 15px;float: right"><icon name="thumbs-o-down"></icon>{{ value.hate }}</span>
                         <span style="margin-right: 25px;float: right"><icon  name="heart-o"></icon></span>
 
-                    </footer>
-                </article>
-                <article class="cont-li">
-                    <div>
-                        <header style="padding: 8px 16px;">标题</header>
-                        <img style="width: 100%" :src="img"/>
-                    </div>
-
-                    <footer style="padding: 8px 16px;">
-                        <span>122! </span>
-                        <span>154! </span>
-                        <span>love </span>
-                    </footer>
-                </article>
-                <article class="cont-li">
-                    <div>
-                        <header style="padding: 8px 16px;">标题</header>
-                        <img style="width: 100%" :src="img"/>
-                    </div>
-
-                    <footer style="padding: 8px 16px;">
-                        <span>122! </span>
-                        <span>154! </span>
-                        <span>love </span>
                     </footer>
                 </article>
 
@@ -66,14 +40,29 @@
 </template>
 
 <script>
+    import Api from '@/api'
     export default {
         name: 'Index',
         data () {
             return {
                 selected: 'x1',
                 img: 'https://tse3.mm.bing.net/th?id=OIP.hT034blVsi-A1ChdKgQM9gHaE-&pid=Api',
-
+                gifs:[]
             }
+        },
+        methods:{
+            load(){
+                let _this = this;
+                Api.gifs().then(function(response){
+                    _this.gifs = response.data.data
+                    console.group(_this.gifs)
+                }).catch(function(error){
+                    _this.$toast(error.response.data.message);
+                });
+            }
+        },
+        mounted:function(){
+            this.load()
         }
     }
 </script>

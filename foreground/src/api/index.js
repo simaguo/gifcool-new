@@ -14,5 +14,16 @@ export default {
             email: email,
             password: password,
         })
+    },
+    regist:function(email,name,password,repassword){
+        return axios.post('/v1/regist',{
+            email:email,
+            name:name,
+            password:password,
+            repassword:repassword
+        })
+    },
+    gifs:function(){
+        return axios.get('/v1/gifs')
     }
 }

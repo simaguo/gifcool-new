@@ -1,14 +1,14 @@
 <template>
     <section class="login-main">
         <div>
-            <mt-field placeholder="请输入邮箱" type="email" v-model="email" state="success"></mt-field>
+            <mt-field placeholder="请输入邮箱" type="email" v-model="email"></mt-field>
             <mt-field placeholder="请输入密码" type="password" v-model="password"></mt-field>
         </div>
 
         <div class="login-button">
             <mt-button type="primary" size="large" @click="login()">登录</mt-button>
             <div style="text-align: center;margin-top: 10px">
-                还没有账号？马上去<a>注册</a>
+                还没有账号？马上去<router-link to="/regist" style="color: #0000FF;font-weight: bold" >注册</router-link>
             </div>
         </div>
     </section>
@@ -16,7 +16,7 @@
 </template>
 
 <script type="application/javascript">
-    import Api from '../api';
+    import Api from '@/api';
     //import { Toast } from 'mint-ui';
 
     export default {
@@ -39,7 +39,7 @@
                     _this.$toast('登陆成功');
                     _this.$router.push({path:'/'});
                 }).catch(function (error) {
-                    _this.$toast('登陆失败');
+                    _this.$toast(error.response.data.message);
                     if (error.response) {
                         // The request was made and the server responded with a status code
                         // that falls out of the range of 2xx
