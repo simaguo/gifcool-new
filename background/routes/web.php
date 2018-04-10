@@ -15,13 +15,18 @@ $router->get('/','ExampleController@index');
 
 $api = app('api.router');//app('Dingo\Api\Routing\Router');
 
-$api->version(['v1','v2'], ['middleware' => 'api.throttle', 'limit' => 60, 'expires' => 1], function ($api) use ($router) {
+$api->version('v1', ['middleware' => 'api.throttle', 'limit' => 60, 'expires' => 1], function ($api) use ($router) {
 
     $api->post('/login', \App\Http\Controllers\AuthController::class . '@login');
     //$api->options('/login', \App\Http\Controllers\AuthController::class . '@login');
     $api->post('/regist', \App\Http\Controllers\AuthController::class . '@regist');
 
     $api->get('/gifs',\App\Http\Controllers\GifsController::class.'@index');
-});
+    $api->get('/gifs/{id}',\App\Http\Controllers\GifsController::class.'@show');
+    $api->get('/gifs/{id}/comments',\App\Http\Controllers\GifsController::class.'@comments');
 
-//echo '<pre>';print_r((array)$api->getRoutes());exit;
+    $api->group(['middleware' => 'api.auth'], function ($api) {
+        $api->any('/comments',\App\Http\Controllers\CommentsController::class.'@create');
+
+    });
+});

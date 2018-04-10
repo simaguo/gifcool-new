@@ -27,8 +27,8 @@ class GifTransformer extends TransformerAbstract
             'title' => (string)$gif->title,
             'url' => (string)$gif->remote_img_url,
             'comments'=>(int) $commets,
-            'love'=>(int)$love,
-            'hate'=>(int)$hate,
+            'up'=>(int)$love,
+            'down'=>(int)$hate,
         ];
     }
 }

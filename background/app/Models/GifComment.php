@@ -14,4 +14,10 @@ use Illuminate\Database\Eloquent\Model;
 class GifComment extends Model
 {
 
+    protected $fillable = ['gif_id', 'user_id', 'content'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

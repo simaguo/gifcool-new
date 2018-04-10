@@ -12,14 +12,14 @@
             <mt-tab-container-item id="x1">
                 <article class="cont-li" v-for="(value, key) in gifs">
                     <div>
-                        <header style="padding: 8px 16px;">{{ value.title }}</header>
-                        <img style="width: 100%" v-lazy="value.url" />
+                        <header style="padding: 8px 16px;"><router-link :to="{name:'Content',query:{id:value.id}}">{{ value.title }}</router-link></header>
+                        <img style="" v-lazy="value.url" />
                     </div>
 
                     <footer style="padding: 8px 16px;">
                         <span style="margin-right: 35px;"><icon  name="commenting"></icon>{{ value.comments }}</span>
-                        <span style="margin-right: 5px;float: right"><icon name="thumbs-o-up"></icon>{{ value.love }}</span>
-                        <span style="margin-right: 15px;float: right"><icon name="thumbs-o-down"></icon>{{ value.hate }}</span>
+                        <span style="margin-right: 5px;float: right"><icon name="thumbs-o-up"></icon>{{ value.up }}</span>
+                        <span style="margin-right: 15px;float: right"><icon name="thumbs-o-down"></icon>{{ value.down }}</span>
                         <span style="margin-right: 25px;float: right"><icon  name="heart-o"></icon></span>
 
                     </footer>
@@ -68,9 +68,11 @@
 </script>
 <style>
     image[lazy=loading] {
-        width: 40px;
+        height: 200px;
+        width: 100%;
+        /*width: 40px;
         height: 300px;
-        margin: auto;
+        margin: auto;*/
     }
 
     .cont-li {

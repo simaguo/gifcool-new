@@ -63,9 +63,9 @@ $app->middleware([
     App\Http\Middleware\EnableCorsMiddleware::class
 ]);
 
-$app->routeMiddleware([
+/*$app->routeMiddleware([
     'auth' => App\Http\Middleware\Authenticate::class,
-]);
+]);*/
 
 /*
 |--------------------------------------------------------------------------

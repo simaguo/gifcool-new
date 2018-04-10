@@ -2,19 +2,19 @@
     <section>
         <article class="content-up">
             <div class="content-up-main">
-                <header>标题</header>
-                <img :src="img"/>
+                <header>{{ gif.title }}</header>
+                <img v-lazy="gif.url" />
             </div>
 
             <footer class="content-up-footer">
                 <span class="content-up-footer-comment">
-                    <icon name="commenting"></icon>15
+                    <icon name="commenting"></icon>{{ gif.comment }}
                 </span>
                 <span class="content-up-footer-up">
-                    <icon name="thumbs-o-up"></icon>122
+                    <icon name="thumbs-o-up"></icon>{{ gif.up }}
                 </span>
                 <span class="content-up-footer-down">
-                    <icon name="thumbs-o-down"></icon>154
+                    <icon name="thumbs-o-down"></icon>{{ gif.down }}
                 </span>
                 <span class="content-up-footer-love">
                     <icon name="heart-o"></icon>
@@ -24,79 +24,126 @@
         </article>
         <article class="content-center">
             <div class="content-center-header">
-                    <span>
-                        <icon name="edit"></icon>
-                        写评论
-                    </span>
+                <span  @click="comment" v-show="show">
+                    <icon name="send-o"></icon>发布
+                </span>
+                <span @click="toggleShow()" v-show="antishow">
+                    <icon name="edit"></icon>点击评论
+                </span>
             </div>
-            <div class="content-center-text">
-                <textarea placeholder="评论"></textarea>
+            <div class="content-center-text" v-show="show">
+                <textarea placeholder="评论"  v-model="content"></textarea>
             </div>
         </article>
 
         <article class="content-down">
             <h3>热门评论</h3>
-            <div class="content-down-comments">
+            <div class="content-down-comments" v-for="item in comments">
                 <div class="content-down-comments-up">
-                    <span><img :src="src" style="border-radius: 10px;height: 20px" /></span>
-                    <span class="content-down-comments-name">张三</span>
-                    <span>3h</span>
-                    <span style="float: right;margin-right: 15px;">
+                    <span><img :src="item.user.avatar" style="border-radius: 10px;height: 20px"/></span>
+                    <span class="content-down-comments-name">{{ item.user.name }}</span>
+                    <span>{{ timeagoInstance.format(item.created_at, 'zh_CN') }}</span>
+                    <!--<span style="float: right;margin-right: 15px;">
                         <icon name="thumbs-o-up"></icon>12
                     </span>
                     <span style="float: right;margin-right: 15px;">
                         <icon name="thumbs-o-down"></icon>8
-                    </span>
+                    </span>-->
                 </div>
                 <div class="content-down-comments-text">
-                    <p>听到砸门，西门庆为什么吓得魂不附体？因为武大郎此时有权在捉奸现场杀死西门庆和潘金莲，但必须同时杀掉两人。宝强几项条件完全具备，又有足够的武术技能实现其目的。早生一百二十年，就不用浪费国家那么多法律资源，宝强一人即可办妥 </p>
+                    <p>{{ item.content }} </p>
                 </div>
             </div>
-            <div class="content-down-comments">
-                <div class="content-down-comments-up">
-                    <span><img :src="src" style="border-radius: 10px;height: 20px" /></span>
-                    <span class="content-down-comments-name">张三</span>
-                    <span>3h</span>
-                    <span style="float: right;margin-right: 15px;">
-                        <icon name="thumbs-o-up"></icon>12
-                    </span>
-                    <span style="float: right;margin-right: 15px;">
-                        <icon name="thumbs-o-down"></icon>8
-                    </span>
-                </div>
-                <div class="content-down-comments-text">
-                    <p>听到砸门，西门庆为什么吓得魂不附体？ </p>
-                </div>
-            </div><div class="content-down-comments">
-            <div class="content-down-comments-up">
-                <span><img :src="src" style="border-radius: 10px;height: 20px" /></span>
-                <span class="content-down-comments-name">张三</span>
-                <span>3h</span>
-                <span style="float: right;margin-right: 15px;">
-                    <icon name="thumbs-o-up"></icon>12
-                </span>
-                <span style="float: right;margin-right: 15px;">
-                    <icon name="thumbs-o-down"></icon>8
-                </span>
-            </div>
-            <div class="content-down-comments-text">
-                <p>听到砸门，西门庆为什么吓得魂不附体？因为武大郎此时有权在捉奸现场杀死西门庆和潘金莲. </p>
-            </div>
-        </div>
+
         </article>
     </section>
 
 </template>
 
 <script type="application/javascript">
+    import Api from '@/api'
+    import timeago from 'timeago.js';
 
     export default {
         name: "Content",
         data () {
             return {
+                gif:{},
+                comments:{},
+                content:'',
+                timeagoInstance:timeago(),
+                show:false,
                 img: 'https://tse3.mm.bing.net/th?id=OIP.hT034blVsi-A1ChdKgQM9gHaE-&pid=Api',
                 src:'https://wx.qlogo.cn/mmopen/vi_32/I36vsEtSvLWx0vklxNibNw0XuCyWBZWHBibPk25a4QvXZF8uhBTFh5eb2VbCFXWD9A8AAPl1mDWBRCGBBR1ojVEA/0'
             };
+        },
+        computed:{
+            antishow:function(){
+                return !this.show;
+            }
+        },
+        created:function(){
+            console.log(this.$route)
+            let id = this.$route.query.id;
+            if(id == undefined || isNaN(Number(id))){
+                this.$toast('参数错误');
+                this.$router.go(-1);
+            }else{
+                this.loadGif(id);
+                this.loadComments(id);
+            }
+
+        },
+        methods:{
+            toggleShow:function () {
+                this.show = !this.show
+            },
+            comment:function () {
+                let _this = this;
+                let id = this.$route.query.id;
+
+                Api.comment(id,this.content).then(function (response) {
+                    _this.toggleShow();
+
+                }).catch(function (error) {
+                    console.group(error)
+                    if(error.response.status==401){
+                        _this.$toast("未登录授权");
+                        _this.$router.push('login');
+                    }else if(error.response.status==422){
+                        for(var i in error.response.data.errors){
+                            let message = error.response.data.errors[i][0];
+                            _this.$toast(message);
+                            break;
+                        }
+                    }
+                    else{
+                        _this.$toast('网络错误')
+                    }
+
+                })
+            },
+            loadGif:function(id){
+                let _this = this;
+                Api.gif(id).then(function (response) {
+                    let data = response.data.data;
+                    _this.gif = data;
+
+                }).catch(function (error) {
+                    _this.$toast('网络错误')
+                })
+
+            },
+            loadComments:function(id){
+                let _this = this;
+                Api.comments(id).then(function(response){
+                    let data = response.data.data;
+                    _this.comments=data;
+
+                }).catch(function (error){
+                    _this.$toast('评论加载失败')
+                })
+            }
         }
     }
 
@@ -104,6 +151,14 @@
 </script>
 
 <style type="text/css">
+    image[lazy=loading] {
+        height: 200px;
+        width: 100%;
+        /*width: 40px;
+        height: 300px;
+        margin: auto;*/
+    }
+
     .content-up {
     }
 
@@ -150,10 +205,11 @@
     }
 
     .content-center .content-center-header span {
-        float: right;
+        float: left;
         line-height: 30px;
         text-align: center;
-        margin-right: 21px
+        margin-left: 12px;
+        #margin-right: 21px
     }
 
     .content-center .content-center-text {

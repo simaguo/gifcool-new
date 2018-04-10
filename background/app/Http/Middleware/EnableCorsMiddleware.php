@@ -25,6 +25,7 @@ class EnableCorsMiddleware
         $response->header('Access-Control-Allow-Origin','*');
         $response->header('Access-Control-Allow-Methods','GET, POST, PUT, DELETE, OPTIONS');
         $response->header('Access-Control-Allow-Headers','Content-Type, X-Auth-Token, Origin, Authorization');
+        $response->header('Access-Control-Max-Age','1728000');
         return $response;
     }
 }

@@ -16,6 +16,8 @@ import 'vue-awesome/icons/thumbs-down'
 import 'vue-awesome/icons/thumbs-o-down'
 import 'vue-awesome/icons/edit'
 import 'vue-awesome/icons/user-o'
+import 'vue-awesome/icons/send-o'
+
 import store from './store/';
 
 Vue.use(MintUI)
