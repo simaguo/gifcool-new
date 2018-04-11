@@ -19,6 +19,9 @@ export default new Vuex.Store({
 
     },
     actions:{
+        refresh:function (context,token) {
+            localStorage.setItem('token',token);
+        },
         login:function(context,user){
             localStorage.setItem('token',user.token);
             localStorage.setItem('email',user.email);

@@ -76,4 +76,10 @@ class AuthController extends Controller
             throw new ValidationHttpException($validator->errors());
         }
     }
+
+    public function refresh()
+    {
+        return $this->returnArray(Auth::refresh());
+        //return $this->response->item(Auth::user(),new UserTransformer);
+    }
 }

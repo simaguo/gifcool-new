@@ -12,6 +12,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "js-base64": "^2.4.3",
     "mint-ui": "^2.2.13",
     "timeago.js": "^3.0.2",
     "vue": "^2.5.2",

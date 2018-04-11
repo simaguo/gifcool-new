@@ -26,6 +26,7 @@ class CreateAboutCommentsTables extends Migration
         Schema::create('gif_collections',function (Blueprint $table){
             $table->increments('id');
             $table->timestamps();
+            $table->softDeletes();
             $table->integer('gif_id')->index()->comment('gifs主键');
             $table->integer('user_id')->index()->comment('users主键');
         });

@@ -3,20 +3,32 @@
         <article class="content-up">
             <div class="content-up-main">
                 <header>{{ gif.title }}</header>
-                <img v-lazy="gif.url" />
+                <img style="width: 100%" v-lazy="gif.url"/>
             </div>
 
             <footer class="content-up-footer">
                 <span class="content-up-footer-comment">
-                    <icon name="commenting"></icon>{{ gif.comment }}
+                    <icon name="commenting"></icon>{{ gif.comments }}
                 </span>
-                <span class="content-up-footer-up">
+
+                <span class="content-up-footer-up" v-show="1==gif.support" @click="up(gif.id,1)">
+                    <icon name="thumbs-up"></icon>{{ gif.up }}
+                </span>
+                <span class="content-up-footer-up" v-show="1!=gif.support" @click="up(gif.id,1)">
                     <icon name="thumbs-o-up"></icon>{{ gif.up }}
                 </span>
-                <span class="content-up-footer-down">
+
+                <span class="content-up-footer-down" v-show="2==gif.support" @click="down(gif.id,2)">
+                    <icon name="thumbs-down"></icon>{{ gif.down }}
+                </span>
+                <span class="content-up-footer-down" v-show="2!=gif.support" @click="down(gif.id,2)">
                     <icon name="thumbs-o-down"></icon>{{ gif.down }}
                 </span>
-                <span class="content-up-footer-love">
+
+                <span class="content-up-footer-love" v-show="gif.collect" @click="collect(gif.id)">
+                    <icon name="heart"></icon>
+                </span>
+                <span class="content-up-footer-love" v-show="!gif.collect" @click="collect(gif.id)">
                     <icon name="heart-o"></icon>
                 </span>
 
@@ -24,7 +36,7 @@
         </article>
         <article class="content-center">
             <div class="content-center-header">
-                <span  @click="comment" v-show="show">
+                <span @click="comment" v-show="show">
                     <icon name="send-o"></icon>发布
                 </span>
                 <span @click="toggleShow()" v-show="antishow">
@@ -32,7 +44,7 @@
                 </span>
             </div>
             <div class="content-center-text" v-show="show">
-                <textarea placeholder="评论"  v-model="content"></textarea>
+                <textarea placeholder="评论" v-model="content"></textarea>
             </div>
         </article>
 
@@ -68,62 +80,76 @@
         name: "Content",
         data () {
             return {
-                gif:{},
-                comments:{},
-                content:'',
-                timeagoInstance:timeago(),
-                show:false,
+                gif: {},
+                comments: {},
+                content: '',
+                timeagoInstance: timeago(),
+                show: false,
                 img: 'https://tse3.mm.bing.net/th?id=OIP.hT034blVsi-A1ChdKgQM9gHaE-&pid=Api',
-                src:'https://wx.qlogo.cn/mmopen/vi_32/I36vsEtSvLWx0vklxNibNw0XuCyWBZWHBibPk25a4QvXZF8uhBTFh5eb2VbCFXWD9A8AAPl1mDWBRCGBBR1ojVEA/0'
+                src: 'https://wx.qlogo.cn/mmopen/vi_32/I36vsEtSvLWx0vklxNibNw0XuCyWBZWHBibPk25a4QvXZF8uhBTFh5eb2VbCFXWD9A8AAPl1mDWBRCGBBR1ojVEA/0'
             };
         },
-        computed:{
-            antishow:function(){
+        computed: {
+            antishow: function () {
                 return !this.show;
             }
         },
-        created:function(){
+        created: function () {
             console.log(this.$route)
             let id = this.$route.query.id;
-            if(id == undefined || isNaN(Number(id))){
+            if (id == undefined || isNaN(Number(id))) {
                 this.$toast('参数错误');
                 this.$router.go(-1);
-            }else{
+            } else {
                 this.loadGif(id);
                 this.loadComments(id);
             }
 
         },
-        methods:{
-            toggleShow:function () {
+        methods: {
+            toggleShow: function () {
                 this.show = !this.show
             },
-            comment:function () {
+            comment: function () {
                 let _this = this;
                 let id = this.$route.query.id;
 
-                Api.comment(id,this.content).then(function (response) {
+                Api.comment(id, this.content).then(function (response) {
                     _this.toggleShow();
+                    _this.$toast({
+                        message: '操作成功',
+                        iconClass: 'icon icon-success'
+                    });
+                    _this.$data.gif.comments++;
+
+                    let data = {content: _this.content, created_at: '刚刚', id: 0, user: {
+                        id:_this.$store.state.id,
+                        avatar:_this.$store.state.avatar,
+                        email:_this.$store.state.email,
+                        name:_this.$store.state.name,
+                    }};
+                    console.log({'comment data':data})
+                    _this.$data.comments.unshift(data)
 
                 }).catch(function (error) {
-                    console.group(error)
-                    if(error.response.status==401){
+                    console.group({"comment error":error})
+                    if (error.response.status == 401) {
                         _this.$toast("未登录授权");
                         _this.$router.push('login');
-                    }else if(error.response.status==422){
-                        for(var i in error.response.data.errors){
+                    } else if (error.response.status == 422) {
+                        for (var i in error.response.data.errors) {
                             let message = error.response.data.errors[i][0];
                             _this.$toast(message);
                             break;
                         }
                     }
-                    else{
+                    else {
                         _this.$toast('网络错误')
                     }
 
                 })
             },
-            loadGif:function(id){
+            loadGif: function (id) {
                 let _this = this;
                 Api.gif(id).then(function (response) {
                     let data = response.data.data;
@@ -134,16 +160,66 @@
                 })
 
             },
-            loadComments:function(id){
+            loadComments: function (id) {
                 let _this = this;
-                Api.comments(id).then(function(response){
+                Api.comments(id).then(function (response) {
                     let data = response.data.data;
-                    _this.comments=data;
+                    _this.comments = data;
 
-                }).catch(function (error){
+                }).catch(function (error) {
                     _this.$toast('评论加载失败')
                 })
-            }
+            },
+            collect: function (gif_id) {
+                let _this = this;
+                _this.$data.gif.collect = !_this.$data.gif.collect;
+                Api.collect(gif_id).then(function () {
+
+                }).catch(function (error) {
+                    if (error.response.status == 401) {
+                        _this.$toast("未登录授权");
+                        _this.$router.push('login');
+                    }
+                })
+            },
+            up: function (gif_id, value) {
+                let _this = this;
+                if (_this.$data.gif.support == value) {
+                    return
+                }
+                if (_this.$data.gif.support != 0) {
+                    _this.$data.gif.down--;
+                }
+                _this.$data.gif.up++;
+                _this.$data.gif.support = value;
+                Api.up(gif_id).then(function () {
+
+                }).catch(function (error) {
+                    if (error.response.status == 401) {
+                        _this.$toast("未登录授权");
+                        _this.$router.push('login');
+                    }
+                })
+            },
+            down: function (gif_id, value) {
+                let _this = this;
+                if (_this.$data.gif.support == value) {
+                    return
+                }
+                if (_this.$data.gif.support != 0) {
+                    _this.$data.gif.up--;
+                }
+                _this.$data.gif.down++;
+                _this.$data.gif.support = value;
+                Api.down(gif_id).then(function () {
+
+                }).catch(function (error) {
+                    if (error.response.status == 401) {
+                        _this.$toast("未登录授权");
+                        _this.$router.push('login');
+                    }
+                })
+            },
         }
     }
 
@@ -227,28 +303,34 @@
     .content-down {
         margin: 10px 12px 0 12px;
     }
-    .content-down h3{
-        border-bottom: 1px solid #ce3d3a;color: #ce3d3a;padding: 6px 0;
+
+    .content-down h3 {
+        border-bottom: 1px solid #ce3d3a;
+        color: #ce3d3a;
+        padding: 6px 0;
     }
 
-    .content-down .content-down-comments{
+    .content-down .content-down-comments {
         margin: 10px 0px;
         #border: #aaa 1px solid;
     }
-    .content-down .content-down-comments .content-down-comments-up{
-         height: 30px;
+
+    .content-down .content-down-comments .content-down-comments-up {
+        height: 30px;
         border-top: #f7e1b5 solid 1px;
     }
-    .content-down .content-down-comments .content-down-comments-up span{
+
+    .content-down .content-down-comments .content-down-comments-up span {
         height: 30px;
         line-height: 30px;
     }
 
-    .content-down .content-down-comments .content-down-comments-name{
+    .content-down .content-down-comments .content-down-comments-name {
         color: #a5a4a4;
     }
-    .content-down .content-down-comments .content-down-comments-text p{
-        text-indent:24px;
-        line-height:20px;
+
+    .content-down .content-down-comments .content-down-comments-text p {
+        text-indent: 24px;
+        line-height: 20px;
     }
 </style>

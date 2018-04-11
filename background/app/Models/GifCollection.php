@@ -10,8 +10,11 @@ namespace App\Models;
 
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class GifCollection extends Model
 {
+    use SoftDeletes;
 
+    protected $fillable = ['gif_id', 'user_id'];
 }

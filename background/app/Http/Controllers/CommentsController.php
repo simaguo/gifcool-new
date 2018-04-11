@@ -8,7 +8,6 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Models\GifComment;
 use Dingo\Api\Exception\ValidationHttpException;
 use Illuminate\Http\Request;
@@ -39,7 +38,9 @@ class CommentsController extends Controller
             'user_id'=>Auth::id()
         ]);
 
-        return $this->response->noContent();
+        return $this->response->created();
 
     }
+
+
 }

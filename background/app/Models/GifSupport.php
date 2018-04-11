@@ -13,5 +13,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class GifSupport extends Model
 {
-
+    protected $fillable = ['user_id', 'gif_id', 'support'];
 }
