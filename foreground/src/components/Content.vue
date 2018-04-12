@@ -3,33 +3,33 @@
         <article class="content-up">
             <div class="content-up-main">
                 <header>{{ gif.title }}</header>
-                <img style="width: 100%" v-lazy="gif.url"/>
+                <img  v-lazy="gif.url"/>
             </div>
 
             <footer class="content-up-footer">
                 <span class="content-up-footer-comment">
-                    <icon name="commenting"></icon>{{ gif.comments }}
+                    <icon name="commenting" :scale="scale"></icon>{{ gif.comments }}
                 </span>
 
                 <span class="content-up-footer-up" v-show="1==gif.support" @click="up(gif.id,1)">
-                    <icon name="thumbs-up"></icon>{{ gif.up }}
+                    <icon name="thumbs-up" :scale="scale"></icon>{{ gif.up }}
                 </span>
                 <span class="content-up-footer-up" v-show="1!=gif.support" @click="up(gif.id,1)">
-                    <icon name="thumbs-o-up"></icon>{{ gif.up }}
+                    <icon name="thumbs-o-up" :scale="scale"></icon>{{ gif.up }}
                 </span>
 
                 <span class="content-up-footer-down" v-show="2==gif.support" @click="down(gif.id,2)">
-                    <icon name="thumbs-down"></icon>{{ gif.down }}
+                    <icon name="thumbs-down" :scale="scale"></icon>{{ gif.down }}
                 </span>
                 <span class="content-up-footer-down" v-show="2!=gif.support" @click="down(gif.id,2)">
-                    <icon name="thumbs-o-down"></icon>{{ gif.down }}
+                    <icon name="thumbs-o-down" :scale="scale"></icon>{{ gif.down }}
                 </span>
 
                 <span class="content-up-footer-love" v-show="gif.collect" @click="collect(gif.id)">
-                    <icon name="heart"></icon>
+                    <icon name="heart" :scale="scale"></icon>
                 </span>
                 <span class="content-up-footer-love" v-show="!gif.collect" @click="collect(gif.id)">
-                    <icon name="heart-o"></icon>
+                    <icon name="heart-o" :scale="scale"></icon>
                 </span>
 
             </footer>
@@ -80,6 +80,7 @@
         name: "Content",
         data () {
             return {
+                scale:0.8,
                 gif: {},
                 comments: {},
                 content: '',
@@ -123,7 +124,7 @@
                     _this.$data.gif.comments++;
 
                     let data = {content: _this.content, created_at: '刚刚', id: 0, user: {
-                        id:_this.$store.state.id,
+                        uid:_this.$store.state.uid,
                         avatar:_this.$store.state.avatar,
                         email:_this.$store.state.email,
                         name:_this.$store.state.name,
@@ -227,7 +228,7 @@
 </script>
 
 <style type="text/css">
-    image[lazy=loading] {
+    img[lazy=loading] {
         height: 200px;
         width: 100%;
         /*width: 40px;

@@ -6,9 +6,25 @@ import store from '@/store'
 import router from '@/router'
 
 axios.defaults.baseURL = 'http://api.gifcool.cn/v1/';
-if (localStorage.getItem('token')) {
-    axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
-}
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+
+/*if (store.state.token) {
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + store.state.token;
+}*/
+axios.interceptors.request.use(function (config) {
+    // Do something before request is sent
+    //console.log(config)
+    //console.log(axios.defaults.headers.common['Authorization'])
+    //console.log(store.state.token)
+    if(store.state.token){
+        config.headers.common['Authorization'] = 'Bearer ' + store.state.token;
+    }
+    //console.log(config)
+    return config;
+}, function (error) {
+    // Do something with request error
+    return Promise.reject(error);
+});
 
 export default {
     refresh: function () {

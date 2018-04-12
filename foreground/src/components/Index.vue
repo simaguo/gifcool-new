@@ -19,22 +19,22 @@
                     </div>
 
                     <footer style="padding: 8px 16px;">
-                        <router-link style="margin-right: 35px;" :to="{name: 'Content',query: {id:value.id}}"><icon name="commenting"></icon>{{ value.comments }}</router-link>
+                        <router-link style="margin-right: 35px;" :to="{name: 'Content',query: {id:value.id}}"><icon name="commenting" :scale="scale"></icon>{{ value.comments }}</router-link>
 
                         <span style="margin-right: 5px;float: right" v-show="1!=value.support"
-                              @click="up(value.id,key,1)"><icon name="thumbs-o-up"></icon>{{ value.up }}</span>
+                              @click="up(value.id,key,1)"><icon name="thumbs-o-up" :scale="scale"></icon>{{ value.up }}</span>
                         <span style="margin-right: 5px;float: right" v-show="1==value.support"
-                              @click="up(value.id,key,1)"><icon name="thumbs-up"></icon>{{ value.up }}</span>
+                              @click="up(value.id,key,1)"><icon name="thumbs-up" :scale="scale"></icon>{{ value.up }}</span>
 
                         <span style="margin-right: 15px;float: right" v-show="2!=value.support"
-                              @click="down(value.id,key,2)"><icon name="thumbs-o-down"></icon>{{ value.down }}</span>
+                              @click="down(value.id,key,2)"><icon name="thumbs-o-down" :scale="scale"></icon>{{ value.down }}</span>
                         <span style="margin-right: 15px;float: right" v-show="2==value.support"
-                              @click="down(value.id,key,2)"><icon name="thumbs-down"></icon>{{ value.down }}</span>
+                              @click="down(value.id,key,2)"><icon name="thumbs-down" :scale="scale"></icon>{{ value.down }}</span>
 
                         <span style="margin-right: 25px;float: right" v-show="!value.collect"
-                              @click="collect(value.id,key)"><icon name="heart-o"></icon></span>
+                              @click="collect(value.id,key)"><icon name="heart-o" :scale="scale"></icon></span>
                         <span style="margin-right: 25px;float: right" v-show="value.collect"
-                              @click="collect(value.id,key)"><icon name="heart"></icon></span>
+                              @click="collect(value.id,key)"><icon name="heart" :scale="scale"></icon></span>
 
                     </footer>
                 </article>
@@ -60,6 +60,7 @@
         data () {
             return {
                 selected: 'x1',
+                scale:0.8,
                 img: 'https://tse3.mm.bing.net/th?id=OIP.hT034blVsi-A1ChdKgQM9gHaE-&pid=Api',
                 gifs: []
             }

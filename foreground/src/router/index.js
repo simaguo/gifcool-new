@@ -59,10 +59,17 @@ router.beforeEach((to, from, next) => {
     //console.log({token:store.state.token})
     let token = store.state.token
     if (!token || is_expire(token)) {
+
         switch (to.name) {
             case 'Collection':
-            case 'User':
+            case 'User':{
+                //console.log({to:to.name,from:from.name})
+                if(from.name == 'Login'){
+                    return ;
+                }
                 next('login')
+            }
+
         }
     }
 
@@ -70,15 +77,21 @@ router.beforeEach((to, from, next) => {
 })
 
 function is_expire(token) {
-    let payload = JSON.parse(Base64.decode(token.split('.')[1]))
-    //console.log({payload:payload})
-    let current = new Date().getTime() / 1000;
-    console.log([payload.exp, 600 + current, payload.exp < 600 + current])
-    if (payload.exp < current) {
+    try{
+        let payload = JSON.parse(Base64.decode(token.split('.')[1]))
+        //console.log({payload:payload})
+        let current = new Date().getTime() / 1000;
+        //console.log([payload.exp, 600 + current, payload.exp < 600 + current])
+        if (payload.exp < current) {
+            return true;
+        } else if (payload.exp < 600 + current) {
+            Api.refresh();
+        }
+    }catch (error) {
+        console.log({'router is_expire function error':error})
         return true;
-    } else if (payload.exp < 600 + current) {
-        Api.refresh();
     }
+
 
     return false;
 }

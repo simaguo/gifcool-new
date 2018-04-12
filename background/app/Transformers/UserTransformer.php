@@ -18,7 +18,7 @@ class UserTransformer extends TransformerAbstract
     public function transform(User $user)
     {
         return [
-            'id' => (int)$user->id,
+            'uid' => (int)$user->id,
             'email' => (string)$user->email,
             'name' => (string)$user->name,
             'avatar' => (string) $user->avatar ?: 'http://online.sccnn.com/img2/5890/dog160527-01.png',

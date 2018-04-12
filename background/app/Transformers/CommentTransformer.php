@@ -22,7 +22,7 @@ class CommentTransformer extends TransformerAbstract
             'content'=>(string) $comments->content,
             'created_at'=>(string) $comments->created_at,
             'user'=> [
-                'id'=>(int) $comments->user->id,
+                'uid'=>(int) $comments->user->id,
                 'name'=>(string) $comments->user->name,
                 'email'=>(string) $comments->user->email,
                 'avatar'=>(string) $comments->user->avatar ?: 'http://online.sccnn.com/img2/5890/dog160527-01.png',
