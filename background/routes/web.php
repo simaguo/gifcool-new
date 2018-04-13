@@ -31,5 +31,6 @@ $api->version('v1', ['middleware' => 'api.throttle', 'limit' => 60, 'expires' =>
             $api->post('/gifs/up', \App\Http\Controllers\GifsController::class . '@up');
             $api->post('/gifs/down', \App\Http\Controllers\GifsController::class . '@down');
             $api->post('/gifs/collect', \App\Http\Controllers\GifsController::class . '@collect');
+            $api->get('/collections', \App\Http\Controllers\CollectionsController::class . '@index');
         });
     });

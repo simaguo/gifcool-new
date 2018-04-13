@@ -17,4 +17,10 @@ class GifCollection extends Model
     use SoftDeletes;
 
     protected $fillable = ['gif_id', 'user_id'];
+    protected $table = 'gif_collections';
+
+    /*public function gif()
+    {
+        $this->belongsTo(Gif::class,'id','gif_id');
+    }*/
 }

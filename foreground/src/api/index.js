@@ -56,6 +56,9 @@ export default {
     comments: function (id) {
         return axios.get('/gifs/' + id + '/comments')
     },
+    collections:function(){
+        return axios.get('/collections')
+    },
     comment: function (id, content) {
         return axios.post('/comments', {gif_id: id, content: content});
     },

@@ -20,6 +20,7 @@ import 'vue-awesome/icons/send-o'
 import 'vue-awesome/icons/home'
 import 'vue-awesome/icons/compass'
 import 'vue-awesome/icons/bookmark-o'
+import 'vue-awesome/icons/spinner'
 
 import store from './store/';
 

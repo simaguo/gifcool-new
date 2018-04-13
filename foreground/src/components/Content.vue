@@ -3,7 +3,7 @@
         <article class="content-up">
             <div class="content-up-main">
                 <header>{{ gif.title }}</header>
-                <img  v-lazy="gif.url"/>
+                <img  v-lazy="imgObj"  />
             </div>
 
             <footer class="content-up-footer">
@@ -93,6 +93,14 @@
         computed: {
             antishow: function () {
                 return !this.show;
+            },
+            imgObj:function(){
+                return {
+                    src: this.$data.gif.url,
+                    //src: require('@/assets/spinner.svg'),
+                    error: require('@/assets/loading-spin.svg'),
+                    loading: require('@/assets/loading-spin.svg'),
+                }
             }
         },
         created: function () {
@@ -228,13 +236,6 @@
 </script>
 
 <style type="text/css">
-    img[lazy=loading] {
-        height: 200px;
-        width: 100%;
-        /*width: 40px;
-        height: 300px;
-        margin: auto;*/
-    }
 
     .content-up {
     }
@@ -246,8 +247,16 @@
         padding: 8px 16px;
     }
 
-    .content-up .content-up-main img {
-        width: 100%
+    .content-up .content-up-main img[lazy=loading] {
+        height: 68%;
+        width: 100%;
+    }
+    .content-up .content-up-main img[lazy=error] {
+        height: 68%;
+        width: 100%;
+    }
+    .content-up .content-up-main img[lazy=loaded] {
+        width: 100%;
     }
 
     .content-up .content-up-footer {

@@ -15,7 +15,7 @@
                         <header style="padding: 8px 16px;">
                             <router-link :to="{name: 'Content',query: {id:value.id}}">{{ value.title }}</router-link>
                         </header>
-                        <img style="width: 100%" v-lazy="value.url"/>
+                        <img  v-lazy="imgObj(value.url)"/>
                     </div>
 
                     <footer style="padding: 8px 16px;">
@@ -65,7 +65,18 @@
                 gifs: []
             }
         },
+        computed:{
+
+        },
         methods: {
+            imgObj:function(src){
+                return {
+                    src: src,
+                    //src: require('@/assets/spinner.svg'),
+                    error: require('@/assets/loading-spin.svg'),
+                    loading: require('@/assets/loading-spin.svg'),
+                }
+            },
             load(){
                 let _this = this;
                 Api.gifs().then(function (response) {
@@ -132,15 +143,20 @@
     }
 </script>
 <style>
-    image[lazy=loading] {
-        height: 200px;
-        width: 100%;
-        /*width: 40px;
-        height: 300px;
-        margin: auto;*/
-    }
-
     .cont-li {
         border-top: #666666 1px solid;
     }
+    .cont-li img[lazy=loading] {
+        height: 68%;
+        width: 100%;
+    }
+    .cont-li img[lazy=error] {
+        height: 68%;
+        width: 100%;
+    }
+    .cont-li img[lazy=loaded] {
+        width: 100%;
+    }
+
+
 </style>

@@ -21,7 +21,7 @@ class GifsController extends Controller
 {
     public function index()
     {
-        $gifs = Gif::query()->orderBy('id','desc')->take(3)->get();
+        $gifs = Gif::query()->orderBy('id','desc')->take(4)->get();
         return $this->response->collection($gifs,new GifTransformer());
     }
 
