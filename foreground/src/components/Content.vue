@@ -44,11 +44,14 @@
                 </span>
             </div>
             <div class="content-center-text" v-show="show">
-                <textarea placeholder="评论" v-model="content"></textarea>
+                <textarea placeholder="评论" v-model="content" ref="content"></textarea>
             </div>
         </article>
 
-        <article class="content-down">
+        <article class="content-down" v-infinite-scroll="loadMore"
+                 infinite-scroll-disabled="loading"
+                 infinite-scroll-immediate-check="false"
+                 infinite-scroll-distance="10">
             <h3>热门评论</h3>
             <div class="content-down-comments" v-for="item in comments">
                 <div class="content-down-comments-up">
@@ -86,9 +89,19 @@
                 content: '',
                 timeagoInstance: timeago(),
                 show: false,
+                loading:false,
+                pagination:{},
                 img: 'https://tse3.mm.bing.net/th?id=OIP.hT034blVsi-A1ChdKgQM9gHaE-&pid=Api',
                 src: 'https://wx.qlogo.cn/mmopen/vi_32/I36vsEtSvLWx0vklxNibNw0XuCyWBZWHBibPk25a4QvXZF8uhBTFh5eb2VbCFXWD9A8AAPl1mDWBRCGBBR1ojVEA/0'
             };
+        },
+        watch:{
+          show:function(val){
+              /*console.log({show:val})
+              if(val){
+                  this.$refs.content.focus()
+              }*/
+          }
         },
         computed: {
             antishow: function () {
@@ -118,13 +131,23 @@
         methods: {
             toggleShow: function () {
                 this.show = !this.show
+                let _this = this
+                setTimeout(() => {
+                    _this.$refs.content.focus();
+                }, 0);
             },
             comment: function () {
                 let _this = this;
                 let id = this.$route.query.id;
-
+                if(!this.content){
+                    _this.$toast("评论不能为空");
+                    _this.$refs.content.focus()
+                    return ;
+                }
+                _this.$indicator.open();
                 Api.comment(id, this.content).then(function (response) {
                     _this.toggleShow();
+                    _this.$indicator.close();
                     _this.$toast({
                         message: '操作成功',
                         iconClass: 'icon icon-success'
@@ -139,6 +162,7 @@
                     }};
                     console.log({'comment data':data})
                     _this.$data.comments.unshift(data)
+                    _this.content = '';
 
                 }).catch(function (error) {
                     console.group({"comment error":error})
@@ -174,10 +198,34 @@
                 Api.comments(id).then(function (response) {
                     let data = response.data.data;
                     _this.comments = data;
+                    _this.pagination = response.data.meta.pagination
 
                 }).catch(function (error) {
                     _this.$toast('评论加载失败')
                 })
+            },
+            loadMore:function(){
+                let _this = this;
+                _this.loading = true;
+                try {
+                    let next =this.pagination.links.next;
+                    if(next){
+                        Api.comments(_this.gif.id,next).then(function (response) {
+                            for (let i = 0; i < response.data.data.length; i++) {
+                                _this.comments.push(response.data.data[i]);
+                            }
+                            _this.pagination = response.data.meta.pagination;
+                            _this.loading = false;
+                            //console.group(_this.gifs)
+                        }).catch(function (error) {
+                            _this.$toast('评论加载失败')
+                        });
+                    }
+                }catch (error){
+                    console.log({'load more error':error})
+                }
+
+
             },
             collect: function (gif_id) {
                 let _this = this;

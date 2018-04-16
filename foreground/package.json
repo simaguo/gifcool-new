@@ -17,6 +17,7 @@
     "timeago.js": "^3.0.2",
     "vue": "^2.5.2",
     "vue-awesome": "^2.3.5",
+    "vue-core-image-upload": "^2.4.5",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
   },

@@ -21,8 +21,8 @@ class GifsController extends Controller
 {
     public function index()
     {
-        $gifs = Gif::query()->orderBy('id','desc')->take(4)->get();
-        return $this->response->collection($gifs,new GifTransformer());
+        $gifs = Gif::query()->orderBy('id','desc')->paginate(3);
+        return $this->response->paginator($gifs,new GifTransformer());
     }
 
     public function show($id)
@@ -33,8 +33,8 @@ class GifsController extends Controller
 
     public function comments($id)
     {
-        $comments = GifComment::query()->with('user')->where('gif_id',$id)->orderBy('id','desc')->get();
-        return $this->response->collection($comments,new CommentTransformer());
+        $comments = GifComment::query()->with('user')->where('gif_id',$id)->orderBy('id','desc')->paginate(15);
+        return $this->response->paginator($comments,new CommentTransformer());
     }
 
     public function up(Request $request)

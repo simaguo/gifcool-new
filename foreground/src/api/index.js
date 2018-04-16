@@ -47,17 +47,26 @@ export default {
             repassword: repassword
         })
     },
-    gifs: function () {
-        return axios.get('/gifs')
+    gifs: function (url) {
+        if(!url){
+            url = '/gifs';
+        }
+        return axios.get(url)
     },
     gif: function (id) {
         return axios.get('/gifs/' + id)
     },
-    comments: function (id) {
-        return axios.get('/gifs/' + id + '/comments')
+    comments: function (id,url) {
+        if(!url){
+            url = '/gifs/' + id + '/comments';
+        }
+        return axios.get(url)
     },
-    collections:function(){
-        return axios.get('/collections')
+    collections:function(url){
+        if(!url){
+            url = '/collections';
+        }
+        return axios.get(url)
     },
     comment: function (id, content) {
         return axios.post('/comments', {gif_id: id, content: content});
@@ -79,5 +88,8 @@ export default {
             router.push('login');
         }
         return axios.post('/gifs/down', {gif_id: id})
+    },
+    search:function (keyword) {
+        return axios.get('/search/'+keyword)
     }
 }

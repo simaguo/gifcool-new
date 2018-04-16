@@ -18,6 +18,14 @@ class Controller extends BaseController
         }
     }
 
+    protected function getQueryLog()
+    {
+        if(env('APP_ENV')=='local'){
+            return  DB::getQueryLog();
+        }
+        return [];
+    }
+
     /**
      * @param string $result
      * @param int $code

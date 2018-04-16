@@ -14,12 +14,25 @@
             </mt-actionsheet>
         </section>
 
+
         <transition name="slide-fade">
             <router-view/>
         </transition>
 
 
-        <section style="padding-top: 55px">
+        <div class="upload-avatar">
+            <vue-core-image-upload
+                    :crop="true"
+                    crop-ratio="1:1"
+                    resize="local"
+                    @imageuploaded="imageuploaded"
+                    extensions="png,jpg"
+                    :data="data"
+                    :max-file-size="104857"
+                    url="http://api.gifcool.cn/upload/avatar" >
+            </vue-core-image-upload>
+        </div>
+        <section style="padding-top: 55px;z-index:1">
             <mt-tabbar fixed v-model="selected">
                 <mt-tab-item id="首页" href="#/">
                     <icon name="home" :scale="scale"></icon>
@@ -39,24 +52,38 @@
                     发现
 
                 </mt-tab-item>
-                <mt-tab-item id="我的" href="#/user">
+                <!--<mt-tab-item id="我的" href="#/user">
                     <icon name="user-o" :scale="scale"></icon>
                     <br/>
                     我的
 
-                </mt-tab-item>
+                </mt-tab-item>-->
             </mt-tabbar>
         </section>
     </div>
 </template>
 
 <script>
+    import VueCoreImageUpload from 'vue-core-image-upload/src/vue-core-image-upload.vue'
     export default {
         name: 'App',
+        components: {
+            'vue-core-image-upload': VueCoreImageUpload,
+        },
         data () {
+            let selected = '';
+            if(this.$router.name='Index'){
+                selected='首页';
+            }else if(this.$router.name='Collection'){
+                selected='收藏';
+            }else if(this.$router.name='Discover'){
+                selected='发现';
+            }else if(this.$router.name='User'){
+                selected='我的';
+            }
             return {
                 scale: 1.4,
-                selected: '首页',
+                selected: selected,
                 sheetVisible:false,
             }
         },
@@ -67,6 +94,10 @@
                     data.push({
                         name:'退出',
                         method:this.toLogout
+                    })
+                    data.push({
+                        name:'上传头像',
+                        method:this.uploadAvatar
                     })
                 }else{
                     data.push({
@@ -86,6 +117,9 @@
             },
             toLogout:function () {
                 this.$store.dispatch('logout');
+            },
+            uploadAvatar:function () {
+                alert('upload avatar');
             }
         }
     }
@@ -102,6 +136,9 @@
         /* .slide-fade-leave-active for below version 2.1.8 */ {
         transform: translateX(10px);
         opacity: 0;
+    }
+    .upload-avatar{
+        display: none;
     }
 
     body, ol, ul, h1, h2, h3, h4, h5, h6, p, th, td, dl, dd, form, fieldset, legend, input, textarea, select {

@@ -3,13 +3,15 @@
     <section>
         <mt-navbar v-model="selected">
             <mt-tab-item id="x1">动图</mt-tab-item>
-            <mt-tab-item id="x2">图文</mt-tab-item>
-            <mt-tab-item id="x3">文章</mt-tab-item>
+            <mt-tab-item id="x2">其它</mt-tab-item>
         </mt-navbar>
 
         <!-- tab-container -->
         <mt-tab-container v-model="selected">
-            <mt-tab-container-item id="x1">
+            <mt-tab-container-item id="x1" v-infinite-scroll="loadMore"
+                                   infinite-scroll-disabled="loading"
+                                   infinite-scroll-immediate-check="false"
+                                   infinite-scroll-distance="10">
                 <article class="cont-li" v-for="(value, key) in gifs">
                     <div>
                         <header style="padding: 8px 16px;">
@@ -41,10 +43,6 @@
 
             </mt-tab-container-item>
             <mt-tab-container-item id="x2">
-                <mt-cell v-for="n in 4" :key="n" :title="'测试 ' + n"/>
-            </mt-tab-container-item>
-            <mt-tab-container-item id="x3">
-                <mt-cell v-for="n in 6" :key="n" :title="'选项 ' + n"/>
             </mt-tab-container-item>
         </mt-tab-container>
 
@@ -61,8 +59,10 @@
             return {
                 selected: 'x1',
                 scale:0.8,
+                loading:false,
                 img: 'https://tse3.mm.bing.net/th?id=OIP.hT034blVsi-A1ChdKgQM9gHaE-&pid=Api',
-                gifs: []
+                gifs: [],
+                pagination:{}
             }
         },
         computed:{
@@ -77,14 +77,39 @@
                     loading: require('@/assets/loading-spin.svg'),
                 }
             },
-            load(){
+            load:function(){
                 let _this = this;
                 Api.gifs().then(function (response) {
                     _this.gifs = response.data.data
+                    _this.pagination = response.data.meta.pagination;
                     //console.group(_this.gifs)
                 }).catch(function (error) {
                     _this.$toast(error.response.data.message);
                 });
+            },
+            loadMore:function(){
+                console.log(10)
+                let _this = this;
+                _this.loading = true;
+                try {
+                    let next =this.pagination.links.next;
+                    if(next){
+                        Api.gifs(next).then(function (response) {
+                            for (let i = 0; i < response.data.data.length; i++) {
+                                _this.gifs.push(response.data.data[i]);
+                            }
+                            _this.pagination = response.data.meta.pagination;
+                            _this.loading = false;
+                            //console.group(_this.gifs)
+                        }).catch(function (error) {
+                            _this.$toast(error.response.data.message);
+                        });
+                    }
+                }catch (error){
+                    console.log({'load more error':error})
+                }
+
+
             },
             collect: function (gif_id, key) {
                 let _this = this;
@@ -156,6 +181,10 @@
     }
     .cont-li img[lazy=loaded] {
         width: 100%;
+    }
+
+    .mint-search{
+        height: auto;
     }
 
 

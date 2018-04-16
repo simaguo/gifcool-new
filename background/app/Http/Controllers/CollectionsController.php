@@ -16,7 +16,7 @@ class CollectionsController extends Controller
 
     public function index()
     {
-        $collections = Auth::user()->collections;
-        return $this->response->collection($collections,new GifTransformer());
+        $collections = Auth::user()->collections()->paginate(3);
+        return $this->response->paginator($collections,new GifTransformer());
     }
 }

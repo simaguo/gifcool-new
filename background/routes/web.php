@@ -22,6 +22,8 @@ $api->version('v1', ['middleware' => 'api.throttle', 'limit' => 60, 'expires' =>
         $api->post('/auth/regist', \App\Http\Controllers\AuthController::class . '@regist');
         $api->post('/auth/refresh', \App\Http\Controllers\AuthController::class . '@refresh');
 
+        $api->get('/search/{keyword}', \App\Http\Controllers\SearchController::class . '@index');
+
         $api->get('/gifs', \App\Http\Controllers\GifsController::class . '@index');
         $api->get('/gifs/{id:[0-9]+}', \App\Http\Controllers\GifsController::class . '@show');
         $api->get('/gifs/{id:[0-9]+}/comments', \App\Http\Controllers\GifsController::class . '@comments');

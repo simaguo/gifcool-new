@@ -1,5 +1,8 @@
 <template>
-    <section class="collections">
+    <section class="collections" v-infinite-scroll="loadMore"
+             infinite-scroll-disabled="loading"
+             infinite-scroll-immediate-check="false"
+             infinite-scroll-distance="10">
         <article class="cont-li" v-for="(value, key) in gifs">
             <div>
                 <header style="padding: 8px 16px;">
@@ -44,7 +47,9 @@
         data () {
             return {
                 scale: 0.8,
-                gifs: []
+                gifs: [],
+                loading:false,
+                pagination:{}
             }
         },
         computed: {},
@@ -57,14 +62,38 @@
                     loading: require('@/assets/loading-spin.svg'),
                 }
             },
-            load(){
+            load:function(){
                 let _this = this;
                 Api.collections().then(function (response) {
                     _this.gifs = response.data.data
+                    _this.pagination = response.data.meta.pagination;
                     //console.group(_this.gifs)
                 }).catch(function (error) {
                     _this.$toast(error.response.data.message);
                 });
+            },
+            loadMore:function(){
+                let _this = this;
+                _this.loading = true;
+                try {
+                    let next =this.pagination.links.next;
+                    if(next){
+                        Api.collections(next).then(function (response) {
+                            for (let i = 0; i < response.data.data.length; i++) {
+                                _this.gifs.push(response.data.data[i]);
+                            }
+                            _this.pagination = response.data.meta.pagination;
+                            _this.loading = false;
+                            //console.group(_this.gifs)
+                        }).catch(function (error) {
+                            _this.$toast(error.response.data.message);
+                        });
+                    }
+                }catch (error){
+                    console.log({'load more error':error})
+                }
+
+
             },
             collect: function (gif_id, key) {
                 let _this = this;
