@@ -12,7 +12,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract, JWTSubject
 {
-    protected $fillable = ['name', 'email', 'password'];
+    protected $fillable = ['name', 'email', 'password', 'avatar'];
 
     use Authenticatable, Authorizable;
 
@@ -40,6 +40,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     public function collections()
     {
-        return $this->belongsToMany(Gif::class,'gif_collections','user_id', 'gif_id')->wherePivot('deleted_at', null);
+        return $this->belongsToMany(Gif::class, 'gif_collections', 'user_id', 'gif_id')->wherePivot('deleted_at', null);
     }
 }
