@@ -4,7 +4,22 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 
-import MintUI from 'mint-ui'
+import {
+    Toast,
+    Indicator,
+    InfiniteScroll,
+    Actionsheet,
+    Lazyload,
+    Header,
+    Navbar,
+    Tabbar,
+    TabItem,
+    TabContainer,
+    TabContainerItem,
+    Button,
+    Search,
+    Field
+} from 'mint-ui'
 import 'mint-ui/lib/style.css'
 import 'vue-awesome/icons/commenting'
 import 'vue-awesome/icons/commenting-o'
@@ -24,17 +39,37 @@ import 'vue-awesome/icons/spinner'
 
 import store from './store/';
 
-Vue.use(MintUI)
 
 import Icon from 'vue-awesome/components/Icon'
 Vue.component('icon', Icon)
+
+
+/*Vue.component(Toast.name, Toast);
+Vue.component(Indicator.name, Indicator);*/
+Vue.use(InfiniteScroll);
+Vue.component(Actionsheet.name, Actionsheet);
+Vue.use(Lazyload);
+
+Vue.component(Header.name, Header);
+Vue.component(Navbar.name, Navbar);
+Vue.component(TabItem.name, TabItem);
+
+Vue.component(TabContainer.name, TabContainer);
+Vue.component(TabContainerItem.name, TabContainerItem);
+
+Vue.component(Tabbar.name, Tabbar);
+Vue.component(TabItem.name, TabItem);
+
+Vue.component(Button.name, Button);
+Vue.component(Search.name, Search);
+Vue.component(Field.name, Field);
 
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 new Vue({
-  el: '#app',
-  router, store,
-  components: { App },
-  template: '<App/>'
+    el: '#app',
+    router, store,
+    components: {App},
+    template: '<App/>'
 })

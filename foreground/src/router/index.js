@@ -20,37 +20,37 @@ const router = new Router({
         {
             path: '/',
             name: 'Index',
-            component: Index
+            component: () => import('@/components/Index')
         },
         {
             path: '/content',
             name: 'Content',
-            component: Content
+            component: () => import('@/components/Content')
         },
         {
             path: '/login',
             name: 'Login',
-            component: Login
+            component: () => import('@/components/Login')
         },
         {
             path: '/regist',
             name: 'Regist',
-            component: Regist
+            component: () => import('@/components/Regist')
         },
         {
             path: '/user',
             name: 'User',
-            component: User,
+            component: () => import('@/components/User'),
         },
         {
             path: '/collection',
             name: 'Collection',
-            component: Collection,
+            component: () => import('@/components/Collection'),
         },
         {
             path: '/discover',
             name: 'Discover',
-            component: Discover,
+            component: () => import('@/components/Discover'),
         }
     ]
 })

@@ -3,7 +3,7 @@
  */
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { Base64 } from 'js-base64'
+//import { Base64 } from 'js-base64'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -23,7 +23,7 @@ export default new Vuex.Store({
             this.state.token = token;
         },
         setEmail:function(state,email){
-            localStorage.setItem('token',email);
+            localStorage.setItem('email',email);
             this.state.email = email;
         },
         setAvatar:function(state,avatar){
