@@ -25,7 +25,7 @@ class CommentTransformer extends TransformerAbstract
                 'uid'=>(int) $comments->user->id,
                 'name'=>(string) $comments->user->name,
                 'email'=>(string) $comments->user->email,
-                'avatar'=>(string) $comments->user->avatar ?: 'http://online.sccnn.com/img2/5890/dog160527-01.png',
+                'avatar'=>(string) $comments->user->avatar ? 'http://api.gifcool.cn'.$comments->user->avatar : 'http://online.sccnn.com/img2/5890/dog160527-01.png',
             ]
         ];
     }

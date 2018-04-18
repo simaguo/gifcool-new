@@ -22,15 +22,15 @@
 
         <section>
             <vue-core-image-upload
+                    ref="avatar"
                     class="avatar-upload"
+                    text=""
                     url="http://api.gifcool.cn/v1/avatar/upload"
                     input-of-file="avatar"
                     extensions="jpg,png,jpeg"
-                    crop="local"
-                    crop-ratio="1:1"
+                    crop="server"
                     :max-file-size="1048576"
                     input-accept="image/jpg,image/jpeg,image/png"
-                    compress="50"
                     :isXhr="true"
                     :headers="headers"
                     :credentials="false"
@@ -132,13 +132,13 @@
             },
             uploadAvatar: function () {
                 try {
-
+                    this.$refs.avatar.$input.click();
                 } catch (error) {
                     console.log({'upload error': error})
                 }
 
             },
-            imageuploaded:function () {
+            imageuploaded:function(){
 
             }
         }

@@ -134,6 +134,9 @@
 </script>
 
 <style>
+    .mint-search{
+        height:100%
+    }
     .discover{
         margin-top: 52px;
         margin-bottom: 55px;
