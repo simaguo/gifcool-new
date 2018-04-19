@@ -25,7 +25,7 @@
                     ref="avatar"
                     class="avatar-upload"
                     text=""
-                    url="http://api.gifcool.cn/v1/avatar/upload"
+                    :url="url"
                     input-of-file="avatar"
                     extensions="jpg,png,jpeg"
                     crop="server"
@@ -70,6 +70,8 @@
 
 <script>
     import VueCoreImageUpload from 'vue-core-image-upload'
+    import Api from '@/api'
+
     export default {
         name: 'App',
         components: {
@@ -80,6 +82,7 @@
                 scale: 1.4,
                 selected: '',
                 sheetVisible: false,
+                url:Api.getAvatarUploadUrl(),
                 headers:{
                     "Authorization":'Bearer ' + this.$store.state.token
                 }
