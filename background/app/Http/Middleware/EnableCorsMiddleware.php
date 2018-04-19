@@ -22,7 +22,7 @@ class EnableCorsMiddleware
             $response = $next($request);
         }
 
-        $allowed_domains = ['http://localhost:8080', ' https://www.gifcool.cn', 'https://gifcool.cn'];
+        $allowed_domains = ['http://localhost:8080', 'https://www.gifcool.cn', 'https://gifcool.cn'];
         $http_origin = $_SERVER['HTTP_ORIGIN'];
         
         if (in_array($http_origin, $allowed_domains)) {
