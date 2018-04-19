@@ -18,7 +18,7 @@
 * jwt
 
 ###### 安装依赖包及迁移数据
->cd path/to/gifcool-new/background/
+>cd path/to/gifcool-new/backend/
 
 >composer install
 
@@ -29,7 +29,7 @@
 
 ###### 设置目录软连接
 
->ln -s   path/to/gifcool-new/background/storage/app/avatar  path/to/gifcool-new/background/public/avatar
+>ln -s   path/to/gifcool-new/backend/storage/app/avatar  path/to/gifcool-new/backend/public/avatar
 
 ### 关于前端部分
 
@@ -42,7 +42,7 @@
 
 ##### 项目运行
 
->cd path/to/gifcool-new/foreground/
+>cd path/to/gifcool-new/frontend/
 
 >npm install (or cnpm install)
 
