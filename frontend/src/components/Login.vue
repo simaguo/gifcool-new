@@ -23,8 +23,8 @@
         name: "login",
         data () {
             return {
-                email: "simaguo@qq.com",
-                password: "123456",
+                email: "",
+                password: "",
             }
         },
         methods: {

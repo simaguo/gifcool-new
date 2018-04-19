@@ -44,8 +44,8 @@ import Icon from 'vue-awesome/components/Icon'
 Vue.component('icon', Icon)
 
 
-/*Vue.component(Toast.name, Toast);
-Vue.component(Indicator.name, Indicator);*/
+Vue.$toast = Vue.prototype.$toast = Toast;
+Vue.$indicator = Vue.prototype.$indicator = Indicator;
 Vue.use(InfiniteScroll);
 Vue.component(Actionsheet.name, Actionsheet);
 Vue.use(Lazyload);
