@@ -24,6 +24,9 @@ $api->version('v1', ['middleware' => 'api.throttle', 'limit' => 60, 'expires' =>
 
         $api->get('/search/{keyword}', \App\Http\Controllers\SearchController::class . '@index');
 
+        $api->get('/elasticsearch/indexes', \App\Http\Controllers\SearchController::class . '@indexesAll');
+        $api->get('/elasticsearch/search/{keyword}', \App\Http\Controllers\SearchController::class . '@elasticsearch');
+
         $api->get('/gifs', \App\Http\Controllers\GifsController::class . '@index');
         $api->get('/gifs/{id:[0-9]+}', \App\Http\Controllers\GifsController::class . '@show');
         $api->get('/gifs/{id:[0-9]+}/comments', \App\Http\Controllers\GifsController::class . '@comments');
