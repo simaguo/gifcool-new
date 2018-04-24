@@ -11,7 +11,7 @@
 |
 */
 
-$router->get('/', 'ExampleController@index');
+//$router->get('/', 'ExampleController@index');
 
 $api = app('api.router');//app('Dingo\Api\Routing\Router');
 
