@@ -96,7 +96,10 @@ export default {
         }
         return axios.post('/gifs/down', {gif_id: id})
     },
-    search: function (keyword) {
-        return axios.get('/search/' + keyword)
+    search: function (keyword,url) {
+        if (!url) {
+            url = '/elasticsearch/search/' + keyword
+        }
+        return axios.get(url)
     }
 }

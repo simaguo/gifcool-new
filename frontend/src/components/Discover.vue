@@ -7,7 +7,10 @@
             :result.sync="gifs"
             v-on:input="changeSearchValue">
 
-        <section class="discover">
+        <section class="discover" v-infinite-scroll="loadMore"
+                 infinite-scroll-disabled="loading"
+                 infinite-scroll-immediate-check="false"
+                 infinite-scroll-distance="10">
             <article class="cont-li" v-for="(value, key) in gifs">
                 <div>
                     <header style="padding: 8px 16px;">
@@ -72,10 +75,35 @@
                 if (keyword != '') {
                     Api.search(keyword).then(function (response) {
                         _this.gifs = response.data.data;
+                        _this.pagination = response.data.meta.pagination;
                     }).catch(function (error) {
                         console.log({'search error': error})
                     })
                 }
+
+            },
+            loadMore:function(){
+                console.log(11)
+                let _this = this;
+                _this.loading = true;
+                try {
+                    let next =this.pagination.links.next;
+                    if(next){
+                        Api.search(this.$data.keyword,next).then(function (response) {
+                            for (let i = 0; i < response.data.data.length; i++) {
+                                _this.gifs.push(response.data.data[i]);
+                            }
+                            _this.pagination = response.data.meta.pagination;
+                            _this.loading = false;
+                            //console.group(_this.gifs)
+                        }).catch(function (error) {
+                            _this.$toast(error.response.data.message);
+                        });
+                    }
+                }catch (error){
+                    console.log({'load more error':error})
+                }
+
 
             },
             collect: function (gif_id, key) {

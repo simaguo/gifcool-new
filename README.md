@@ -16,6 +16,8 @@
 * lumen5.5
 * dingo/api
 * jwt
+* elasticsearch
+* mysql
 
 ###### 安装依赖包及迁移数据
 >cd path/to/gifcool-new/backend/

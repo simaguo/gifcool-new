@@ -13,6 +13,9 @@ use App\Models\Gif;
 use App\Transformers\GifTransformer;
 use Elasticsearch\Client;
 use Elasticsearch\ClientBuilder;
+use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Input;
 
 class SearchController extends Controller
 {
@@ -20,18 +23,23 @@ class SearchController extends Controller
 
     public function index($keyword)
     {
-        if ($keyword) {
+        /*if ($keyword) {
             $keyword = urldecode($keyword);
             $result = Gif::query()->where('title', 'like', '%' . $keyword . '%')->paginate();
+
             return $this->response->paginator($result, new GifTransformer());
-        }
+        }*/
 
         return $this->response->noContent();
     }
 
-    public function elasticsearch($keyword)
+    public function elasticsearch(Request $request, $keyword)
     {
         $keyword = urldecode($keyword);
+        $page = Input::get('page', 1);
+        $size = Input::get('size', 3);
+        $from = ($page - 1) * $size;
+
         $client = $this->getElasticClient();
         $params = [
             'index' => 'gifcool-new',
@@ -41,14 +49,25 @@ class SearchController extends Controller
                     'match' => [
                         'title' => $keyword
                     ]
-                ]
+                ],
+                'size' => $size,
+                'from' => $from
             ]
         ];
-
-        return $client->search($params);
+        $result = $client->search($params);
+        $data = collect($result['hits']['hits'])->map(function ($hit) {
+            return (object)$hit['_source'];
+        });
+        $paginate = new LengthAwarePaginator($data, $result['hits']['total'], $size, $page, [
+            'path' => $request->getUriForPath($request->getPathInfo())
+        ]);
+        return $this->response->paginator($paginate, new GifTransformer());
     }
 
-    protected function getElasticClient(): Client
+    /**
+     * @return Client
+     */
+    protected function getElasticClient()
     {
         if (is_null($this->client)) {
             $this->client = ClientBuilder::create()->build();

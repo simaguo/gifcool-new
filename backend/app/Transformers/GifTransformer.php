@@ -9,7 +9,6 @@
 namespace App\Transformers;
 
 
-use App\Models\Gif;
 use App\Models\GifCollection;
 use App\Models\GifComment;
 use App\Models\GifSupport;
@@ -18,7 +17,11 @@ use League\Fractal\TransformerAbstract;
 
 class GifTransformer extends TransformerAbstract
 {
-    public function transform(Gif $gif)
+    /**
+     * @param \App\Models\Gif|Object $gif
+     * @return array
+     */
+    public function transform($gif)
     {
         $commets = GifComment::query()->where('gif_id',$gif->id)->count();
         $up = GifSupport::query()->where('gif_id',$gif->id)->where('support',1)->count();
