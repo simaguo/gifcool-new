@@ -5,12 +5,13 @@ import axios from 'axios';
 import store from '@/store'
 import router from '@/router'
 
-let base_url = 'http://api.gifcool.cn/v1/';
+let base_url = 'http://api.gifcool.cn/';
 if (process.env.NODE_ENV === 'production') {
-    base_url = 'https://api.gifcool.cn/v1/';
+    base_url = 'https://api.gifcool.cn/';
 }
 axios.defaults.baseURL = base_url;
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+axios.defaults.headers.common['Accept'] = 'application/vnd.gifcool.v1+json';
 
 /*if (store.state.token) {
  axios.defaults.headers.common['Authorization'] = 'Bearer ' + store.state.token;
